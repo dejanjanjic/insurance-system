@@ -1,5 +1,7 @@
 package net.etfbl.sni.insurancesystem.service;
 
+import net.etfbl.sni.insurancesystem.dtos.RegisterResponseDTO;
+import net.etfbl.sni.insurancesystem.enums.Role;
 import net.etfbl.sni.insurancesystem.exception.UserAlreadyExistsException;
 import net.etfbl.sni.insurancesystem.model.User;
 import net.etfbl.sni.insurancesystem.repository.UserRepository;
@@ -28,14 +30,16 @@ public class UserService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
-    public User register(User user) {
+    public RegisterResponseDTO register(User user) {
         if (userRepository.findByUsername(user.getUsername()).isPresent() ||
                 userRepository.findByMail(user.getMail()).isPresent()) {
             throw new UserAlreadyExistsException("User with username \"" + user.getUsername() + "\" already exists or email is already in use..");
         }
+        user.setRole(Role.ROLE_CLIENT);
         user.setPassword(
                 passwordEncoder.encode(user.getPassword())
         );
-        return userRepository.save(user);
+
+        return new RegisterResponseDTO(userRepository.save(user));
     }
 }

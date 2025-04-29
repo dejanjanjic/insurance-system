@@ -15,9 +15,4 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @GetMapping("test")
-    String test(){
-        System.out.println("Test");
-        return "Test";
-    }
 }

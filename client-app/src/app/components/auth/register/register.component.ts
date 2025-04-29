@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -15,8 +15,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { UserService } from '../../../services/user.service';
+import { User } from '../../../model/user.model';
 
-// Custom validator to check if passwords match
 export const passwordMatchValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
@@ -49,11 +50,13 @@ export class RegisterComponent {
   hidePassword = true;
   hideConfirmPassword = true;
 
+  private userService: UserService = inject(UserService);
+
   constructor(private fb: FormBuilder, private router: Router) {
     this.registerForm = this.fb.group(
       {
         username: ['', [Validators.required]],
-        email: ['', [Validators.required, Validators.email]],
+        mail: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required]],
       },
@@ -63,13 +66,25 @@ export class RegisterComponent {
 
   onSubmit(): void {
     if (this.registerForm.valid) {
-      this.router.navigate(['/verify']);
+      const formData = this.registerForm.value;
+      const registrationPayload: User = {
+        username: formData.username,
+        mail: formData.mail,
+        password: formData.password,
+      };
+      this.userService.register(registrationPayload).subscribe({
+        next: (response) => {
+          this.router.navigate(['/login']);
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
     }
   }
 
-  // Getter methods for easier form control access in the template
-  get email() {
-    return this.registerForm.get('email');
+  get mail() {
+    return this.registerForm.get('mail');
   }
 
   get password() {

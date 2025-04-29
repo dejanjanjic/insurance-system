@@ -7,11 +7,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = environment.apiUrl + '/auth';
+  private baseUrl = environment.apiUrl + '/api/v1/auth';
 
   constructor(private http: HttpClient) {}
 
-  getTest(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/test`, { responseType: 'text' });
+  getToken() {
+    return false;
   }
 }

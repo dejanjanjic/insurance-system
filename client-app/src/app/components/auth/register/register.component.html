@@ -40,14 +40,14 @@
             <mat-icon matPrefix>email</mat-icon>
             <input
               matInput
-              formControlName="email"
+              formControlName="mail"
               type="email"
               autocomplete="email"
               placeholder="Email*"
             />
-            @if(email?.hasError('required') && email?.touched){
+            @if(mail?.hasError('required') && mail?.touched){
             <mat-error>Email is required</mat-error>
-            } @if(email?.hasError('email') && !email?.hasError('required')){
+            } @if(mail?.hasError('email') && !mail?.hasError('required')){
             <mat-error>Please enter a valid email</mat-error>
             }
           </mat-form-field>
