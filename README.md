@@ -28,9 +28,9 @@ The project involves the development of a system that allows clients to browse, 
 
 ## Technologies
 
-- **Back-end**: [Programming language of choice]
-- **Front-end**: [Technologies of choice]
-- **Database**: [RDBMS of choice]
+- **Back-end**: Spring Boot
+- **Front-end**: Angular 19
+- **Database**: MySQL
 - **Payment systems**: Stripe/PayPal Sandbox
 - **Monitoring and security**: Nagios, SIEM
 
