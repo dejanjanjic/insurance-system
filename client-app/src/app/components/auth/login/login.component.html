@@ -1,0 +1,114 @@
+<div class="auth-container">
+  <div class="auth-card-wrapper">
+    <mat-card class="auth-card">
+      <mat-card-header>
+        <div class="auth-header">
+          <div class="logo-container">
+            <img
+              src="assets/images/insurance.png"
+              alt="Insurance Company Logo"
+              class="auth-logo"
+            />
+          </div>
+          <h1>Welcome Back</h1>
+          <p>Sign in to access your insurance account</p>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-icon matPrefix>person</mat-icon>
+            <input
+              matInput
+              formControlName="username"
+              type="text"
+              autocomplete="username"
+              placeholder="Username*"
+            />
+            @if(loginForm.get('username')?.hasError('required') &&
+            loginForm.get('username')?.touched){
+            <mat-error>Username is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-icon matPrefix>lock</mat-icon>
+            <input
+              matInput
+              formControlName="password"
+              [type]="hidePassword ? 'password' : 'text'"
+              autocomplete="current-password"
+              placeholder="Password*"
+            />
+            <button
+              type="button"
+              mat-icon-button
+              matSuffix
+              (click)="hidePassword = !hidePassword"
+            >
+              <mat-icon>{{
+                hidePassword ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+            @if(loginForm.get('password')?.hasError('required') &&
+            loginForm.get('password')?.touched){
+            <mat-error>Password is required</mat-error>
+            }
+          </mat-form-field>
+
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="full-width submit-button"
+            [disabled]="loginForm.invalid"
+          >
+            Sign In
+          </button>
+
+          <div class="auth-divider">
+            <mat-divider></mat-divider>
+            <span>New to Insurance Protect?</span>
+            <mat-divider></mat-divider>
+          </div>
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="full-width"
+            routerLink="/register"
+          >
+            Create Account
+          </button>
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="auth-info">
+      <mat-card class="info-card">
+        <mat-card-content>
+          <h2>Our Insurance Services</h2>
+          <ul class="services-list">
+            <li>
+              <mat-icon>favorite</mat-icon>
+              <span>Life Insurance</span>
+            </li>
+            <li>
+              <mat-icon>home</mat-icon>
+              <span>Property Insurance</span>
+            </li>
+            <li>
+              <mat-icon>directions_car</mat-icon>
+              <span>Vehicle Insurance</span>
+            </li>
+            <li>
+              <mat-icon>flight</mat-icon>
+              <span>Travel Insurance</span>
+            </li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

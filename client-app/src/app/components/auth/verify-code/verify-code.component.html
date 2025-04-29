@@ -1,0 +1,78 @@
+<div class="auth-container">
+  <mat-card class="auth-card">
+    <mat-card-header>
+      <div class="auth-header">
+        <div class="logo-container">
+          <img
+            src="assets/images/insurance.png"
+            alt="Insurance Company Logo"
+            class="auth-logo"
+          />
+        </div>
+        <h1>Verification Required</h1>
+        <p>Enter the verification code sent to your email</p>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="verifyForm" (ngSubmit)="onSubmit()" class="auth-form">
+        <div class="verification-info">
+          <mat-icon color="primary">email</mat-icon>
+          <p>
+            We've sent a verification code to
+            <strong>user&#64;example.com</strong>
+          </p>
+        </div>
+
+        <div class="verification-code-input">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Verification Code</mat-label>
+            <input
+              matInput
+              formControlName="code"
+              type="text"
+              autocomplete="one-time-code"
+            />
+            <mat-icon matPrefix>lock_clock</mat-icon>
+            @if(verifyForm.get('code')?.hasError('required')){
+            <mat-error> Verification code is required </mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="verification-timer">
+          Code expires in: <span class="timer">{{ timeRemaining }}</span>
+        </div>
+
+        <div class="verification-actions">
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="full-width submit-button"
+            [disabled]="verifyForm.invalid"
+          >
+            Verify & Sign In
+          </button>
+
+          <button
+            mat-stroked-button
+            type="button"
+            class="full-width"
+            [disabled]="!canResend"
+            (click)="resendCode()"
+          >
+            Resend Code
+          </button>
+        </div>
+
+        <div class="back-to-login">
+          <a routerLink="/auth/login">
+            <mat-icon>arrow_back</mat-icon>
+            Back to Login
+          </a>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

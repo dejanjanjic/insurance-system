@@ -1,0 +1,178 @@
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+  padding: 0 16px;
+  overflow: hidden;
+}
+
+.auth-card-wrapper {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  gap: 24px;
+  height: auto;
+  max-height: 90vh;
+}
+
+.auth-card {
+  flex: 1;
+  max-width: 500px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.logo-container {
+  margin-bottom: 16px;
+}
+
+.auth-logo {
+  width: 64px;
+  height: 64px;
+}
+
+.auth-header h1 {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.auth-header p {
+  color: #666;
+  margin-bottom: 0;
+  font-size: 0.9rem;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.submit-button {
+  margin-top: 8px;
+  height: 44px;
+  font-size: 1rem;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 16px 0;
+  gap: 16px;
+}
+
+.auth-divider span {
+  color: #666;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.auth-divider mat-divider {
+  flex: 1;
+}
+
+.auth-info {
+  display: flex;
+  flex: 1;
+  max-width: 400px;
+}
+
+.info-card {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #0277bd;
+  color: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.info-card h2 {
+  font-size: 1.3rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.services-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.services-list li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+  padding: 10px;
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.services-list li mat-icon {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+/* Make form fields more compact */
+::ng-deep .mat-mdc-form-field {
+  margin-bottom: -8px;
+}
+
+::ng-deep .mat-mdc-form-field-infix {
+  min-height: unset !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+/* Fix for vertical alignment of placeholder and icons */
+::ng-deep .mat-mdc-input-element {
+  vertical-align: middle !important;
+}
+
+::ng-deep .mat-mdc-form-field-icon-prefix > .mat-icon,
+::ng-deep .mat-mdc-form-field-icon-suffix > .mat-icon {
+  padding-top: 4px;
+}
+
+::ng-deep .mat-mdc-card-content {
+  padding-bottom: 16px !important;
+}
+
+@media (max-width: 900px) {
+  .auth-card-wrapper {
+    flex-direction: column;
+    align-items: center;
+    max-height: none;
+    overflow-y: auto;
+  }
+
+  .auth-card,
+  .auth-info {
+    max-width: 500px;
+  }
+
+  .auth-container {
+    height: auto;
+    min-height: 100vh;
+  }
+}

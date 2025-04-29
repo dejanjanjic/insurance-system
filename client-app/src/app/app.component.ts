@@ -1,27 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { RouterOutlet, RouterModule } from '@angular/router';
-import { AuthService } from './services/auth.service';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './components/shared/header/header.component';
+import { FooterComponent } from './components/shared/footer/footer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
+  templateUrl: 'app.component.html',
+  styleUrl: 'app.component.css',
 })
-export class AppComponent implements OnInit {
-  private authService: AuthService = inject(AuthService);
-  public test = 'aa';
-
-  ngOnInit(): void {
-    this.authService.getTest().subscribe({
-      next: (result: string) => {
-        console.log('OP');
-        this.test = result;
-      },
-      error: (err) => {
-        console.error('Error during test:', err.message);
-      },
-    });
-  }
+export class AppComponent {
+  title = 'insurance-client-app';
 }

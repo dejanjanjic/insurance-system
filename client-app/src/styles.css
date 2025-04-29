@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+
+/* Adjust Material form field styles for more compact display */
+.mat-mdc-form-field-subscript-wrapper {
+  height: auto !important;
+}
+
+/* Reduce bottom padding on card content */
+.mat-mdc-card-content:last-child {
+  padding-bottom: 16px !important;
+}
+
+.app-container {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}

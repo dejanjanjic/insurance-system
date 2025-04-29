@@ -1,14 +1,24 @@
 import { Routes } from '@angular/router';
-import { RegistrationPageComponent } from './components/registration-page/registration-page.component';
-import { LoginPageComponent } from './components/login-page/login-page.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { VerifyCodeComponent } from './components/auth/verify-code/verify-code.component';
 
 export const routes: Routes = [
   {
-    path: 'registration',
-    component: RegistrationPageComponent,
+    path: 'login',
+    component: LoginComponent,
   },
   {
-    path: 'login',
-    component: LoginPageComponent,
+    path: 'register',
+    component: RegisterComponent,
+  },
+  {
+    path: 'verify',
+    component: VerifyCodeComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
   },
 ];
