@@ -18,6 +18,7 @@ public class User implements UserDetails {
     private String username;
     private String password;
     private String mail;
+    private String activationCode;
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -36,6 +37,13 @@ public class User implements UserDetails {
         return new UserBuilder();
     }
 
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

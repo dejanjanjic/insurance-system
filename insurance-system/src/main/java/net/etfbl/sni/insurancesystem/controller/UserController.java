@@ -1,12 +1,9 @@
 package net.etfbl.sni.insurancesystem.controller;
 
 import net.etfbl.sni.insurancesystem.dtos.RegisterResponseDTO;
-import net.etfbl.sni.insurancesystem.enums.Role;
-import net.etfbl.sni.insurancesystem.model.ResponseMessage;
 import net.etfbl.sni.insurancesystem.model.User;
 import net.etfbl.sni.insurancesystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

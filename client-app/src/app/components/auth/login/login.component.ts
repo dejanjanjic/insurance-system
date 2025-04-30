@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -12,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { LoginDTO } from '../../../model/user.model';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -33,6 +35,8 @@ export class LoginComponent {
   loginForm: FormGroup;
   hidePassword = true;
 
+  private authService: AuthService = inject(AuthService);
+
   constructor(private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -42,7 +46,27 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.router.navigate(['/verify']);
+      const formData = this.loginForm.value;
+      const loginDTO: LoginDTO = {
+        username: formData.username,
+        password: formData.password,
+      };
+
+      this.authService.login(loginDTO).subscribe({
+        next: (response) => {
+          this.router.navigate(['/verify']);
+        },
+        error: (error) => {
+          // if (error.status === 409) {
+          //   this.serverError =
+          //     error.error?.message || 'Username or email already in use.';
+          // } else {
+          //   this.serverError =
+          //     'An error occurred during registration. Please try again.';
+          // }
+          console.error('Login error:', error);
+        },
+      });
     }
   }
 }

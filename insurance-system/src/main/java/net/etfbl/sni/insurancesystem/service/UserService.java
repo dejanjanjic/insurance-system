@@ -2,7 +2,8 @@ package net.etfbl.sni.insurancesystem.service;
 
 import net.etfbl.sni.insurancesystem.dtos.RegisterResponseDTO;
 import net.etfbl.sni.insurancesystem.enums.Role;
-import net.etfbl.sni.insurancesystem.exception.UserAlreadyExistsException;
+import net.etfbl.sni.insurancesystem.exception.EmailAlreadyExistsException;
+import net.etfbl.sni.insurancesystem.exception.UsernameAlreadyExistsException;
 import net.etfbl.sni.insurancesystem.model.User;
 import net.etfbl.sni.insurancesystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +32,11 @@ public class UserService implements UserDetailsService {
     }
 
     public RegisterResponseDTO register(User user) {
-        if (userRepository.findByUsername(user.getUsername()).isPresent() ||
-                userRepository.findByMail(user.getMail()).isPresent()) {
-            throw new UserAlreadyExistsException("User with username \"" + user.getUsername() + "\" already exists or email is already in use..");
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new UsernameAlreadyExistsException("Username is already in use.");
+        }
+        if(userRepository.findByMail(user.getMail()).isPresent()) {
+            throw new EmailAlreadyExistsException("Email is already in use");
         }
         user.setRole(Role.ROLE_CLIENT);
         user.setPassword(

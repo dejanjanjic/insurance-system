@@ -15,6 +15,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { UserService } from '../../../services/user.service';
 import { User } from '../../../model/user.model';
 
@@ -41,6 +43,8 @@ export const passwordMatchValidator: ValidatorFn = (
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
@@ -49,8 +53,11 @@ export class RegisterComponent {
   registerForm: FormGroup;
   hidePassword = true;
   hideConfirmPassword = true;
+  serverError: string | null = null;
+  isLoading = false;
 
   private userService: UserService = inject(UserService);
+  private snackBar: MatSnackBar = inject(MatSnackBar);
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.registerForm = this.fb.group(
@@ -65,19 +72,40 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
+    this.serverError = null;
+
     if (this.registerForm.valid) {
+      this.isLoading = true;
       const formData = this.registerForm.value;
       const registrationPayload: User = {
         username: formData.username,
         mail: formData.mail,
         password: formData.password,
       };
+
       this.userService.register(registrationPayload).subscribe({
         next: (response) => {
+          this.isLoading = false;
+          this.snackBar.open(
+            'Registration successful! You can now log in.',
+            'Close',
+            {
+              duration: 5000,
+              panelClass: 'success-snackbar',
+            }
+          );
           this.router.navigate(['/login']);
         },
         error: (error) => {
-          console.log(error);
+          this.isLoading = false;
+          if (error.status === 409) {
+            this.serverError =
+              error.error?.message || 'Username or email already in use.';
+          } else {
+            this.serverError =
+              'An error occurred during registration. Please try again.';
+          }
+          console.error('Registration error:', error);
         },
       });
     }
