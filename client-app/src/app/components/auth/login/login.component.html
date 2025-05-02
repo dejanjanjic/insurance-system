@@ -16,6 +16,13 @@
       </mat-card-header>
 
       <mat-card-content>
+        @if(serverError) {
+        <div class="error-message">
+          <mat-icon>error</mat-icon>
+          <span>{{ serverError }}</span>
+        </div>
+        }
+
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form">
           <mat-form-field appearance="outline" class="full-width">
             <mat-icon matPrefix>person</mat-icon>
@@ -62,9 +69,13 @@
             color="primary"
             type="submit"
             class="full-width submit-button"
-            [disabled]="loginForm.invalid"
+            [disabled]="loginForm.invalid || isLoading"
           >
-            Sign In
+            @if(isLoading){
+            <mat-spinner diameter="24" color="accent"></mat-spinner>
+            }@else {
+            <span>Sign In</span>
+            }
           </button>
 
           <div class="auth-divider">

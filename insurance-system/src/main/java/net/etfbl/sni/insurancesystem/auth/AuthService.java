@@ -58,6 +58,8 @@ public class AuthService {
         user.setActivationCode(activationCode);
         userRepository.save(user);
 
+
+
         String emailTo = user.getMail();
         emailService.sendActivationEmail(emailTo, activationCode);
 

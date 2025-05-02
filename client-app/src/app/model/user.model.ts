@@ -17,3 +17,8 @@ export interface LoginResponseDTO {
 export interface TokenDTO {
   token: string;
 }
+
+export interface VerificationCodeDTO {
+  mail: string;
+  verificationCode: string;
+}

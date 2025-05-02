@@ -20,9 +20,16 @@
           <mat-icon color="primary">email</mat-icon>
           <p>
             We've sent a verification code to
-            <strong>user&#64;example.com</strong>
+            <strong>{{ this.authService.getUserEmail() }}</strong>
           </p>
         </div>
+
+        @if(serverError) {
+        <div class="error-message">
+          <mat-icon>error</mat-icon>
+          <span>{{ serverError }}</span>
+        </div>
+        }
 
         <div class="verification-code-input">
           <mat-form-field appearance="outline" class="full-width">
@@ -40,34 +47,27 @@
           </mat-form-field>
         </div>
 
-        <div class="verification-timer">
-          Code expires in: <span class="timer">{{ timeRemaining }}</span>
-        </div>
-
         <div class="verification-actions">
           <button
             mat-raised-button
             color="primary"
             type="submit"
             class="full-width submit-button"
-            [disabled]="verifyForm.invalid"
+            [disabled]="verifyForm.invalid || isLoading"
           >
-            Verify & Sign In
-          </button>
-
-          <button
-            mat-stroked-button
-            type="button"
-            class="full-width"
-            [disabled]="!canResend"
-            (click)="resendCode()"
-          >
-            Resend Code
+            @if(isLoading) {
+            <mat-spinner
+              diameter="24"
+              color="accent"
+              class="button-spinner"
+            ></mat-spinner>
+            <span>Verifying...</span>
+            } @else { Verify & Sign In }
           </button>
         </div>
 
         <div class="back-to-login">
-          <a routerLink="/auth/login">
+          <a routerLink="/login">
             <mat-icon>arrow_back</mat-icon>
             Back to Login
           </a>

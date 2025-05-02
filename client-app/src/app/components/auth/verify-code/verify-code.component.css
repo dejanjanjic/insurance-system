@@ -69,18 +69,23 @@
   color: #444;
 }
 
+/* Error message styling */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: #ffebee;
+  border-radius: 4px;
+  color: #d32f2f;
+}
+
+.error-message mat-icon {
+  color: #d32f2f;
+}
+
 .verification-code-input {
   margin-top: 16px;
-}
-
-.verification-timer {
-  text-align: center;
-  color: #f44336;
-  font-weight: 500;
-}
-
-.timer {
-  font-weight: 700;
 }
 
 .verification-actions {
@@ -97,6 +102,15 @@
 .submit-button {
   height: 48px;
   font-size: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Loading spinner styles */
+.button-spinner {
+  margin-right: 8px;
 }
 
 .back-to-login {

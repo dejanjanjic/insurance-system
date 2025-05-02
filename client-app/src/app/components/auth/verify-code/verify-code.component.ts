@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,8 +11,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { interval, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-verify-code',
@@ -25,15 +27,17 @@ import { take } from 'rxjs/operators';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatProgressSpinnerModule,
   ],
   templateUrl: './verify-code.component.html',
   styleUrl: './verify-code.component.css',
 })
-export class VerifyCodeComponent implements OnInit, OnDestroy {
+export class VerifyCodeComponent implements OnInit {
   verifyForm: FormGroup;
-  timeRemaining = '2:00';
-  canResend = false;
-  private timerSubscription?: Subscription;
+  authService: AuthService = inject(AuthService);
+  userEmail: string = '';
+  isLoading: boolean = false;
+  serverError: string | null = null;
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.verifyForm = this.fb.group({
@@ -42,43 +46,61 @@ export class VerifyCodeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.startTimer(120);
-  }
+    this.userEmail = this.authService.getUserEmail();
 
-  ngOnDestroy(): void {
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
-  }
-
-  startTimer(seconds: number): void {
-    this.canResend = false;
-    const timer$ = interval(1000).pipe(take(seconds + 1));
-
-    this.timerSubscription = timer$.subscribe((elapsed) => {
-      const remaining = seconds - elapsed;
-      const minutes = Math.floor(remaining / 60);
-      const secs = remaining % 60;
-
-      this.timeRemaining = `${minutes}:${secs < 10 ? '0' + secs : secs}`;
-
-      if (remaining === 0) {
-        this.canResend = true;
-      }
-    });
-  }
-
-  resendCode(): void {
-    if (this.canResend) {
-      // Simulate resending code
-      this.startTimer(120);
+    if (!this.userEmail) {
+      this.router.navigate(['/login']);
     }
   }
 
   onSubmit(): void {
-    if (this.verifyForm.valid) {
-      // For demonstration, navigate to dashboard
-      this.router.navigate(['/dashboard']);
+    this.serverError = null;
+
+    if (this.verifyForm.valid && this.userEmail) {
+      this.isLoading = true;
+      const verificationCode = this.verifyForm.get('code')?.value;
+
+      const verificationData = {
+        mail: this.userEmail,
+        verificationCode: verificationCode,
+      };
+
+      this.authService.verify(verificationData).subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          if (response && response.token) {
+            // Store the token or handle it according to your auth logic
+            // For example:
+            // localStorage.setItem('auth_token', response.token);
+
+            // Navigate to dashboard or home page
+            this.router.navigate(['/dashboard']);
+          }
+          this.serverError = 'dobro je';
+        },
+        error: (error) => {
+          this.isLoading = false;
+          if (error.status === 404) {
+            if (
+              error.error?.message &&
+              error.error.message.includes("Activation codes don't match")
+            ) {
+              this.serverError = 'Verification code is incorrect.';
+            } else if (
+              error.error?.message &&
+              error.error.message.includes("Email isn't associated")
+            ) {
+              this.serverError = 'Email not found.';
+            } else {
+              this.serverError = error.error?.message || 'Verification failed.';
+            }
+          } else {
+            this.serverError =
+              'An error occurred during verification. Please try again.';
+          }
+          console.error('Verification error:', error);
+        },
+      });
     }
   }
 }
