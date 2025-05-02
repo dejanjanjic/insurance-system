@@ -69,9 +69,7 @@ export class VerifyCodeComponent implements OnInit {
         next: (response) => {
           this.isLoading = false;
           if (response && response.token) {
-            // Store the token or handle it according to your auth logic
-            // For example:
-            // localStorage.setItem('auth_token', response.token);
+            localStorage.setItem('auth_token', response.token);
 
             // Navigate to dashboard or home page
             this.router.navigate(['/dashboard']);
